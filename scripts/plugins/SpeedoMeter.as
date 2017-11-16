@@ -26,7 +26,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
   const CCommand@ pArguments = pParams.GetArguments();
  
   if (pArguments.ArgC() == 1) {
-    if (pArguments.Arg(0) == "speedometer") {
+    if (pArguments.Arg(0) == "!speedometer") {
       pParams.ShouldHide = true;
       string szSteamId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
 
