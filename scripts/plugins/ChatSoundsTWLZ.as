@@ -109,7 +109,7 @@ void cspitch(const CCommand@ pArgs) {
   CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
   const string steamId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
  
-  if (pArgs.ArgC() < 1)
+  if (pArgs.ArgC() < 2)
     return;
 
   g_Pitch[steamId] = Math.clamp(50, 200, atoi(pArgs[1]));
