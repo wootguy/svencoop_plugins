@@ -806,7 +806,7 @@ final class Diffy {
 			}
 			
 			g_Scheduler.SetTimeout( @this, "changeEntities", 1.0 );
-			g_Scheduler.SetTimeout( @this, "endMapinit", 22.0 );
+			g_Scheduler.SetTimeout( @this, "endMapinit", 11.0 );
 		}
 	}
 	
