@@ -3,6 +3,7 @@ const string g_SoundFile = "scripts/plugins/ChatSounds.txt";
 const array<string> g_FuckOff = {
 'ehehehe',
 'ethan',
+'lmao',
 'moonman',
 'poiii',
 'sugoi',
@@ -95,7 +96,7 @@ void listsounds(const CCommand@ pArgs) {
       sMessage = "";
     }
   }
- 
+
   if (sMessage.Length() > 2) {
     sMessage.Resize(sMessage.Length() -2);
     g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTCONSOLE, sMessage + "\n");
@@ -108,7 +109,7 @@ void cspitch(const CCommand@ pArgs) {
 
   CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
   const string steamId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
- 
+
   if (pArgs.ArgC() < 2)
     return;
 
@@ -125,7 +126,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
     if (g_SoundList.exists(soundArg)) {
       CBasePlayer@ pPlayer = pParams.GetPlayer();
       const string steamId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
- 
+
       if (!g_ChatTimes.exists(steamId))
         g_ChatTimes[steamId] = 0;
 
@@ -140,7 +141,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
       else {
         if (soundArg == 'medic' || soundArg == 'meedic') {
           pPlayer.ShowOverheadSprite('sprites/saveme.spr', 51.0f, 3.5f);
-          g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, string(g_SoundList[soundArg]), 1.0f, 0.2f, 0, 100, 0, true, pPlayer.pev.origin);
+          g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, string(g_SoundList[soundArg]), 1.0f, 0.2f, 0, Math.RandomLong(75, 125), 0, true, pPlayer.pev.origin);
         }
         else {
           pPlayer.ShowOverheadSprite(Math.RandomLong(0, 1) == 0 ? g_SpriteName : g_SpriteName2, 56.0f, 2.25f);
@@ -151,7 +152,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
             g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, g_MalfunctionSound, 1.0f, 0.75f, 0, 100, 0, true, pPlayer.pev.origin);
           }
           else {
-            g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, string(g_SoundList[soundArg]), 0.9f, 0.4f, 0, g_Pitch.exists(steamId) ? int(g_Pitch[steamId]) : 100, 0, true, pPlayer.pev.origin);
+            g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, string(g_SoundList[soundArg]), 1.0f, 0.5f, 0, g_Pitch.exists(steamId) ? int(g_Pitch[steamId]) : 100, 0, true, pPlayer.pev.origin);
           }
         }
         g_ChatTimes[steamId] = t;
