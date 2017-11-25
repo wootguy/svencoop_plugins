@@ -1,6 +1,11 @@
 string g_verylastmap = "";
+bool g_forcehc = false;
+CClientCommand cc_forcehc( "forcehc", "Force next map to 100pct. difficulty", @ForceHardcore );
 
 const array<string> g_allowmaps = {
+//'toonrun1',
+//'toonrun2',
+//'toonrun3', nerf laser
 '-sp_campaign_portal',
 'ba_canal1',
 'ba_canal1b',
@@ -230,6 +235,10 @@ const array<string> g_allowmaps = {
 'rl02t',
 'rl02w',
 'rl02y',
+'sc_another',
+'sectore_1',
+'sectore_2',
+'sectore_3',
 'th_ep1_00',
 'th_ep1_01',
 'th_ep1_02',
@@ -249,26 +258,26 @@ const array<string> g_allowmaps = {
 'th_ep3_05',
 'th_ep3_06',
 'th_ep3_07',
-'uplink'
+'uplink',
+'yabma'
 };
 
 final class Diffy {
-
 	/**
 	*	Difficulty choosed using number of People connected
 	*/
 	private array<double> diffPerPeep = {
 			0.70, //0
-			0.71, //1
-			0.72, //2
-			0.73, //3
-			0.74, //4
-			0.75, //5
-			0.76, //6
-			0.77, //7
-			0.785,//8
-			0.80, //9
-			0.825,//10
+			0.75, //1
+			0.76, //2
+			0.77, //3
+			0.78, //4
+			0.79, //5
+			0.80, //6
+			0.81, //7
+			0.82, //8
+			0.83, //9
+			0.84, //10
 			0.85, //11
 			0.86, //12
 			0.87, //13
@@ -284,7 +293,7 @@ final class Diffy {
 			0.97, //23
 			0.98, //24
 			0.99, //25
-			0.99, //26
+			0.999, //26
 			0.999, //27
 			0.999, //28
 			1.000, //29
@@ -750,9 +759,7 @@ final class Diffy {
 		if( pFile !is null && pFile.IsOpen() ) {
 
 			for( int i = 0; i < iMax; ++i ){
-			
 				pFile.Write( "\""+sk_names[i]+"\" \""+getSkValue(i)+"\"\n" );
-				
 			}
 
 			pFile.Close();
@@ -760,13 +767,10 @@ final class Diffy {
 	}
 	
 	void updateSkilldata(){
-	
 		CBaseEntity@ pWorld = g_EntityFuncs.Instance( 0 );
 		CBaseEntity@ pEntity = g_EntityFuncs.CreateEntity( "trigger_setcvar" );
 
 		if( pEntity !is null ) {
-		
-			
 			g_EntityFuncs.DispatchKeyValue( pEntity.edict(), "m_iszCVarToChange", "skill" );
 			
 			if(m_flAverageVoteDifficulty < 0.4){
@@ -806,18 +810,22 @@ final class Diffy {
 			}
 			
 			g_Scheduler.SetTimeout( @this, "changeEntities", 1.0 );
-			g_Scheduler.SetTimeout( @this, "endMapinit", 11.0 );
+			g_Scheduler.SetTimeout( @this, "endMapinit", 17.5 );
 		}
 	}
 	
 	void generateMessage(){
 		int difficultInt = int(m_flAverageVoteDifficulty*1000.0+0.5);
-		string aStr = "DIFFICULTY: Current: "+(difficultInt/10)+"."+(difficultInt%10)+" percent ";
+		string aStr = "DIFFICULTY: Current: "+(difficultInt/10)+"."+(difficultInt%10)+" % ";
 		string bStr = "";
 		string cStr = "";
 		string dStr = "";
+		string eStr = "";
 
-		if(!MapAllowed())
+		if(g_forcehc)
+			eStr = " [HARDCORE MODE MANUALLY ENABLED]";
+
+		if(!MapAllowed() && !g_forcehc)
 			dStr = " [disallowed map, plugin inactive]";
 
 		if(peepNum == 0){
@@ -851,7 +859,7 @@ final class Diffy {
 		else
 			bStr = "(WARNING: MAXIMUM DIFFICULTY!)";
 		
-		s_message = aStr+bStr+cStr+dStr;
+		s_message = aStr+bStr+cStr+dStr+eStr;
 	}
 	
 	void changeEntities(){
@@ -862,7 +870,6 @@ final class Diffy {
 			CBaseEntity@ pEntity = g_EntityFuncs.Instance( i );
 			
 			if( pEntity !is null ) {
-				
 				string pClassname = pEntity.GetClassname();
 				int multiplyMethod = 0;
 				
@@ -915,6 +922,11 @@ final class Diffy {
 				}
 				if(m_sMap == "th_ep2_04"){
 					if(pEntity.pev.modelindex == 226 || pEntity.pev.modelindex == 259){
+						hurtExeptions = true;
+					}
+				}
+				if(m_sMap == "yabma"){
+					if(pEntity.pev.modelindex == 262){
 						hurtExeptions = true;
 					}
 				}
@@ -1168,11 +1180,14 @@ final class Diffy {
 		if(diffiSum < 1.0 && diffiSum > 0.999) diffiSum = 0.999;
 
 		if(m_flAverageVoteDifficulty != diffiSum){
-			m_flAverageVoteDifficulty = MapAllowed() ? diffiSum : 0.7;
+			if(g_forcehc){
+				m_flAverageVoteDifficulty = 1.0;
+			}else{
+				m_flAverageVoteDifficulty = MapAllowed() ? diffiSum : 0.7;
+			}
 			updateSkillfile();
 			generateMessage();
 		}
-
 	}
 	
 	void DeathCheck(){
@@ -1340,26 +1355,42 @@ void AppendHostname() {
 }
 
 bool MapAllowed() {
-	if (g_allowmaps.find(g_Engine.mapname) >= 0) {
+	if (g_allowmaps.find(g_Engine.mapname) >= 0 || g_forcehc) {
 		return true;
-	}
-	else {
+	}else{
 		return false;
 	}
 }
 
 void RestartMap() {
-	if ( (MapAllowed() && g_verylastmap != "" && g_allowmaps.find(g_verylastmap) < 0) || (!MapAllowed() && g_verylastmap != "" && g_allowmaps.find(g_verylastmap) >= 0) ) {
-		g_verylastmap = g_Engine.mapname;
-
+	if ( (MapAllowed() && g_verylastmap != "" && g_allowmaps.find(g_verylastmap) < 0 && !g_forcehc) || (!MapAllowed() && g_verylastmap != "" && g_allowmaps.find(g_verylastmap) >= 0) ) {
 		for(int i = 0; i < 3; ++i) {
 			g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "[DynamicDifficulty] Restarting map to toggle difficulty system.\n" );
 		}
-		g_Scheduler.SetTimeout( "ReloadMap", 2.0 );
+		g_Scheduler.SetTimeout( "ReloadMap", 2.5 );
 	}
+	g_forcehc = false;
 	g_verylastmap = g_Engine.mapname;
 }
 
 void ReloadMap() {
 	g_EngineFuncs.ChangeLevel(g_Engine.mapname);
+}
+
+void ForceHardcore(const CCommand@ args) {
+	CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
+
+	if (g_PlayerFuncs.AdminLevel(pPlayer) >= ADMIN_YES) {
+		if (args.ArgC() >= 2) {
+			if (atoi(args[1]) == 0) {
+				g_forcehc = false;
+				g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTCONSOLE, "HARDCORE MODE NEXTMAP: OFF\n");
+				g_diffy.calcMedianDiffy();
+			}else{
+				g_forcehc = true;
+				g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTCONSOLE, "HARDCORE MODE NEXTMAP: ON\n");
+				g_diffy.calcMedianDiffy();
+			}
+		}
+	}
 }
