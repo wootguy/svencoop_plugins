@@ -1,11 +1,8 @@
 string g_verylastmap = "";
 bool g_forcehc = false;
-CClientCommand cc_forcehc( "forcehc", "Force next map to 100pct. difficulty", @ForceHardcore );
+CClientCommand cc_forcehc( "forcehc", "Force next map to 100pct. difficulty (0/1)", @ForceHardcore );
 
 const array<string> g_allowmaps = {
-//'toonrun1',
-//'toonrun2',
-//'toonrun3', nerf laser
 '-sp_campaign_portal',
 'ba_canal1',
 'ba_canal1b',
