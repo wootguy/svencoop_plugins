@@ -68,6 +68,19 @@ const array<string> g_allowmaps = {
 'e1j',              
 'e2a',                
 'e2b',
+'escape_series_1a',
+'escape_series_1b',
+'escape_series_2a',
+'escape_series_2b',
+'escape_series_2c',
+'escape_series_2d',
+'escape_series_2e',
+'escape_series_3a',
+'escape_series_3b',
+'escape_series_3c',
+'escape_series_3d', // electrofence at lift?
+'escape_series_3e',
+'escape_series',
 'etc',
 'etc0b',
 'etc0b2',
@@ -488,7 +501,8 @@ final class Diffy {
 			{ 0.0, 0.0, 0.0, 0.0, 0.2, 0.6, 1.0, 1.0 }, //hard-multiply
 			{ 0.25, 0.35, 0.45, 0.5, 0.75, 1.0, 1.0, 1.0 }, //silofan_changefriction
 			{ 1.0, 1.0, 1.0, 1.0, 1.25, 2.0, 5.0, 6.0 }, //faster speed (psychobot) (hl_c13_a3 platforms)
-			{ 0.5, 0.75, 0.9, 1.0, 1.25, 2.0, 5.0, 6.0 } //mixed speed (hl_c13_a3 platforms)
+			{ 0.5, 0.75, 0.9, 1.0, 1.25, 2.0, 5.0, 6.0 }, //mixed speed (hl_c13_a3 platforms)
+			{ 0.01, 0.1, 0.5, 1.0, 1.0, 1.0, 0.0, 0.0 } //trigger_hurt ignore hardcore
 	};
 	
 	/**
@@ -807,7 +821,7 @@ final class Diffy {
 			}
 			
 			g_Scheduler.SetTimeout( @this, "changeEntities", 1.0 );
-			g_Scheduler.SetTimeout( @this, "endMapinit", 17.5 );
+			g_Scheduler.SetTimeout( @this, "endMapinit", 27.5 );
 		}
 	}
 	
@@ -918,18 +932,20 @@ final class Diffy {
 					}
 				}
 				if(m_sMap == "th_ep2_04"){
-					if(pEntity.pev.modelindex == 226 || pEntity.pev.modelindex == 259){
-						hurtExeptions = true;
+					if(pEntity.pev.modelindex == 226 || pEntity.pev.modelindex == 259 || pEntity.pev.modelindex == 640){
+						//hurtExeptions = true;
+						multiplyMethod = 16;
 					}
 				}
 				if(m_sMap == "yabma"){
 					if(pEntity.pev.modelindex == 262){
-						hurtExeptions = true;
+						//hurtExeptions = true;
+						multiplyMethod = 16;
 					}
 				}
 				
 				if(canHurt){
-					if(hurtAlwaysIn || (pEntity.pev.dmg > 0.5 && pEntity.pev.dmg < 150.0 && !hurtExeptions)){
+					if( hurtAlwaysIn || (pEntity.pev.dmg > 0.5 && pEntity.pev.dmg < 150.0 && !hurtExeptions) ){
 						g_EntityFuncs.DispatchKeyValue( pEntity.edict(), "dmg", (pEntity.pev.dmg*getEntchangeValue(multiplyMethod)) );
 					}
 					if( pEntity.pev.dmg < 0.0 && m_flAverageVoteDifficulty == 1.0 ){
@@ -1295,6 +1311,7 @@ void MapInit() {
 
 void MapActivate() {
 	g_diffy.updateOnMapinit();
+	OverrideMapCFG();
 	AppendHostname();
 }
 
@@ -1390,4 +1407,12 @@ void ForceHardcore(const CCommand@ args) {
 			}
 		}
 	}
+}
+
+void OverrideMapCFG() {
+	if (!MapAllowed())
+		return;
+
+	g_EngineFuncs.ServerCommand("mp_disablegaussjump 0\n");
+	g_EngineFuncs.ServerExecute();
 }
