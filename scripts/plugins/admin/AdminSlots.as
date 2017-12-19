@@ -13,13 +13,11 @@ void PluginInit() {
 }
 
 HookReturnCode CanPlayerUseReservedSlot(edict_t@ player, const string& in, const string& in, bool& out can) {
-  if (g_EntityFuncs.IsValidEntity(player)) {
-    CBasePlayer@ pPlayer = cast<CBasePlayer@>(g_EntityFuncs.Instance(player));
+  CBasePlayer@ pPlayer = cast<CBasePlayer@>(g_EntityFuncs.Instance(player));
 
-    if (pPlayer !is null && g_PlayerFuncs.AdminLevel(pPlayer) >= ADMIN_YES) {
-      can = true;
-      return HOOK_HANDLED;
-    }
+  if (pPlayer !is null && g_PlayerFuncs.AdminLevel(pPlayer) >= ADMIN_YES) {
+    can = true;
+    return HOOK_HANDLED;
   }
 
   return HOOK_CONTINUE;
@@ -30,6 +28,6 @@ void NumSlotsChanged(CCVar@ cvar, const string& in szOldValue, float flOldValue)
    SlotUpdate(cvar.GetInt());
 }
 
-void SlotUpdate(uint slots) {
+void SlotUpdate(const uint slots) {
   g_AdminControl.SetReservedSlots(slots);
 }
