@@ -1,5 +1,6 @@
-const int g_MaxVotes = 2; // times per map party mode can be enabled
+const int g_MaxVotes = 0; // times per map party mode can be enabled
 const int g_VoteWaitTime = 300; // time in seconds between a new vote (on or off) is possible
+//const string g_PartySound = "svencoop2/stadium3.wav"; // path to some sound in sound/ to play when PM was enabled or remove lines 30,31,85
 const string g_PartySound = "rautek/nico/party.ogg"; // path to some sound in sound/ to play when PM was enabled or remove lines 30,31,85
 
 const string g_Keyrendermode = "$i_origrendermode";
@@ -45,9 +46,13 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
       g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Calm down, there was a vote little time ago already.\n");
       return HOOK_HANDLED;
     }
+    //if () {
+    //  g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Voting is currently not allowed.\n");
+    //  return HOOK_HANDLED;
+    //}
 
     if (g_pThinkFunc !is null) {
-      Vote@ PMVote = Vote("PartyOff", "Stop the party? :(", 15.0f, 66.6f);
+      Vote@ PMVote = Vote("PartyOff", "Stop the party? :(", 15.0f, 66.0f);
       PMVote.SetYesText("Yes, let's go home");
       PMVote.SetNoText("No, I don't want to leave");
       PMVote.SetVoteBlockedCallback(@PMVoteBlocked);
@@ -58,7 +63,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
       g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Maximum tries to enable Party Mode reached, try again after map change.\n");
     }
     else {
-      Vote@ PMVote = Vote("PartyOn", "ZOMG let's have a fucking party!!!??", 15.0f, 66.6f);
+      Vote@ PMVote = Vote("PartyOn", "ZOMG let's have a fucking party!!!??", 15.0f, 75.0f);
       PMVote.SetYesText("Yes, let's party");
       PMVote.SetNoText("No, I'd rather stay at home");
       PMVote.SetVoteBlockedCallback(@PMVoteBlocked);
@@ -95,6 +100,7 @@ void PMVoteEnd(Vote@ pVote, bool fResult, int) {
     }
     else {
       g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] YAY MORE PARTY LOL! :D:D:D\n");
+      g_SoundSystem.PlaySound(g_EntityFuncs.IndexEnt(0), CHAN_STATIC, g_PartySound, 1.0f, ATTN_NONE, 0, 100);
     }
   }
 }

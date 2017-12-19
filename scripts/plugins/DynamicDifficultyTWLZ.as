@@ -56,6 +56,7 @@ const array<string> g_allowmaps = {
 'co1i',
 'co1j',
 'co1k',
+'city_invasion',
 'e0a',            
 'e0b',            
 'e1a',             
@@ -128,6 +129,7 @@ const array<string> g_allowmaps = {
 'hl_c16_a4',
 'hl_c17',
 'hl_c18',
+'io_v1',
 'mistake_coop_a',
 'mistake_coop_b',
 'mistake_coop_c',
@@ -827,7 +829,7 @@ final class Diffy {
 	
 	void generateMessage(){
 		int difficultInt = int(m_flAverageVoteDifficulty*1000.0+0.5);
-		string aStr = "DIFFICULTY: Current: "+(difficultInt/10)+"."+(difficultInt%10)+" % ";
+		string aStr = "DIFFICULTY: Current: "+(difficultInt/10)+"."+(difficultInt%10)+" Percent ";
 		string bStr = "";
 		string cStr = "";
 		string dStr = "";
@@ -1361,8 +1363,8 @@ void AppendHostname() {
 	int difficultInt = g_diffy.getDiff();
 
 	if (difficultInt > 700) {
-		string dStr = string(difficultInt/10) + "." + string(difficultInt%10);
-		string hostname = "hostname \"" + g_EngineFuncs.CVarGetString("hostname") + " | difficulty: " + dStr + "%\"\n";
+		string dStr = "" + string(difficultInt/10) + "." + string(difficultInt%10) + "%";
+		string hostname = "hostname \"" + g_EngineFuncs.CVarGetString("hostname") + " | difficulty: " + dStr + "\"\n";
 		g_EngineFuncs.ServerCommand(hostname);
 		g_EngineFuncs.ServerExecute();
         }

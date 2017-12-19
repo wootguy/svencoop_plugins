@@ -131,8 +131,7 @@ void execRandomChooseMap() {
         g_Mt.mtRand(mapList.length() - 1) : Math.RandomLong(0, mapList.length() - 1);
     
     // Execute ServerCommand
-    g_EngineFuncs.ServerCommand("changelevel " + mapList[target] + "\n");
-    g_EngineFuncs.ServerExecute();
+    g_EngineFuncs.ChangeLevel(mapList[target]);
 }
 
 /** Remove past maps from list */

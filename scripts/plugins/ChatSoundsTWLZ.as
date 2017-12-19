@@ -96,7 +96,7 @@ void listsounds(const CCommand@ pArgs) {
       sMessage = "";
     }
   }
-
+ 
   if (sMessage.Length() > 2) {
     sMessage.Resize(sMessage.Length() -2);
     g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTCONSOLE, sMessage + "\n");
@@ -106,14 +106,13 @@ void listsounds(const CCommand@ pArgs) {
 }
 
 void cspitch(const CCommand@ pArgs) {
-
   CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
   const string steamId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
-
+ 
   if (pArgs.ArgC() < 2)
     return;
 
-  g_Pitch[steamId] = Math.clamp(50, 200, atoi(pArgs[1]));
+  g_Pitch[steamId] = Math.clamp(45, 225, atoi(pArgs[1]));
   g_PlayerFuncs.SayText(pPlayer, "[ChatSounds] Pitch set to: " + int(g_Pitch[steamId]) + ".\n");
 }
 
@@ -127,6 +126,9 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
       CBasePlayer@ pPlayer = pParams.GetPlayer();
       const string steamId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
 
+      //if ( pArguments.ArgC() == 1 )
+      //  pParams.ShouldHide = true;
+ 
       if (!g_ChatTimes.exists(steamId))
         g_ChatTimes[steamId] = 0;
 
