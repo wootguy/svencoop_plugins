@@ -1,4 +1,4 @@
-const string g_SoundFile = "scripts/plugins/ChatSounds.txt";
+const string g_SoundFile = "scripts/plugins/cfg/ChatSounds.txt";
 
 const array<string> g_FuckOff = {
 'ehehehe',
@@ -138,7 +138,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
 
       if (d < g_Delay) {
         float w = float(g_Delay - d) / 1000.0f;
-        g_PlayerFuncs.PrintKeyBindingString(pPlayer, "Wait " + format_float(w) + " seconds\n");
+        g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTCENTER, "Wait " + format_float(w) + " seconds\n");
         return HOOK_CONTINUE;
       }
       else {
@@ -155,7 +155,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
             g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, g_MalfunctionSound, 1.0f, 0.75f, 0, 100, 0, true, pPlayer.pev.origin);
           }
           else {
-            g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, string(g_SoundList[soundArg]), 1.0f, 0.5f, 0, g_Pitch.exists(steamId) ? int(g_Pitch[steamId]) : 100, 0, true, pPlayer.pev.origin);
+            g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, string(g_SoundList[soundArg]), 1.0f, 0.4f, 0, g_Pitch.exists(steamId) ? int(g_Pitch[steamId]) : 100, 0, true, pPlayer.pev.origin);
           }
         }
         g_ChatTimes[steamId] = t;
