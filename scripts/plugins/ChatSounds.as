@@ -28,7 +28,7 @@ void MapInit() {
   g_Game.PrecacheModel(g_SpriteName);
 }
 
-const string g_SoundFile = "scripts/plugins/ChatSounds.txt";
+const string g_SoundFile = "scripts/plugins/cfg/ChatSounds.txt";
 void ReadSounds() {
   File@ file = g_FileSystem.OpenFile(g_SoundFile, OpenFile::READ);
   if (file !is null && file.IsOpen()) {
@@ -96,7 +96,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
 
       if (d < g_Delay) {
         float w = float(g_Delay - d) / 1000.0f;
-        g_PlayerFuncs.SayText(pPlayer, "[ChatSounds] AntiSpam: Your sounds are muted for " + ceil(w) + " seconds.\n");
+        g_PlayerFuncs.PrintKeyBindingString(pPlayer, "Wait " + ceil(w) + " seconds\n");
         return HOOK_CONTINUE;
       }
       else {
