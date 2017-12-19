@@ -150,8 +150,8 @@ void ReadSprites()
 				continue;
 			
 			//linux quickfix
-			if(parsed[1].SubString(parsed[1].Length()-1,1) == " " || parsed[1].SubString(parsed[1].Length()-1,1) == "\n" || parsed[1].SubString(parsed[1].Length()-1,1) == "\r" || parsed[1].SubString(parsed[1].Length()-1,1) == "\t")
-				parsed[1] = parsed[1].SubString(0, parsed[1].Length()-1);
+			//if(parsed[1].SubString(parsed[1].Length()-1,1) == " " || parsed[1].SubString(parsed[1].Length()-1,1) == "\n" || parsed[1].SubString(parsed[1].Length()-1,1) == "\r" || parsed[1].SubString(parsed[1].Length()-1,1) == "\t")
+			//	parsed[1] = parsed[1].SubString(0, parsed[1].Length()-1);
 				
 			TrailSpriteData tsData;
 			tsData.sprPath = parsed[0];
@@ -390,7 +390,8 @@ HookReturnCode PlayerSpawn(CBasePlayer@ pPlayer)
 void plrPostSpawn(int &in iIndex, string &in steamId)
 {
 	CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex(iIndex);
-	if(pPlayer is null)
+
+	if(pPlayer is null || !pPlayer.IsConnected())
 		return;
 		
 	PlayerCrossoverData@ pcData = cast<PlayerCrossoverData@>(g_PlayerCrossover[steamId]);

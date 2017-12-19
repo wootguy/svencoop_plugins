@@ -21,7 +21,7 @@ CClientCommand g_ListModels("listmodels", "List model names and colors of the cu
 CClientCommand g_ListPrecachedModels("listprecachedmodels", "List model names who are currently precached by the server (admin only)", @ListPrecachedModels);
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("animaliZed");
+  g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
 
   g_Hooks.RegisterHook(Hooks::Player::ClientDisconnect, @ClientDisconnect);

@@ -1,7 +1,7 @@
 CClientCommand g_ListModels("listmodels", "List model names and colors of the current players", @ListModels);
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("animaliZed");
+  g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
 }
 

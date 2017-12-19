@@ -1,7 +1,7 @@
 CCVar@ g_ReservedSlots;
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("animaliZed");
+  g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
   g_Module.ScriptInfo.SetMinimumAdminLevel(ADMIN_YES);
 

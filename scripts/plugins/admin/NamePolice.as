@@ -3,7 +3,7 @@ const array<string> g_Names = { 'name1', 'name2', 'name3' };
 CScheduledFunction@ g_pThinkFunc = null;
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("animaliZed");
+  g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
   g_Module.ScriptInfo.SetMinimumAdminLevel(ADMIN_YES);
 }

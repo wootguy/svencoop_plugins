@@ -10,7 +10,7 @@ const array<string> g_IgnoreMaps = {
 };
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("animaliZed");
+  g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
 
   g_Hooks.RegisterHook(Hooks::Weapon::WeaponTertiaryAttack, @WeaponTertiaryAttack);
