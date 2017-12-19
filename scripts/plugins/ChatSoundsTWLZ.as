@@ -27,7 +27,7 @@ CClientCommand g_ListSounds("listsounds", "List all chat sounds", @listsounds);
 CClientCommand g_CSPitch("cspitch", "Sets the pitch at which your ChatSounds play (50-200)", @cspitch);
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("animaliZed");
+  g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
 
   g_Hooks.RegisterHook(Hooks::Player::ClientSay, @ClientSay);

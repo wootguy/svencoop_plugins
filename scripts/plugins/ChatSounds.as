@@ -9,7 +9,7 @@ array<string> @g_SoundListKeys;
 CClientCommand g_ListSounds("listsounds", "List all chat sounds", @listsounds);
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("animaliZed");
+  g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
 
   g_Hooks.RegisterHook(Hooks::Player::ClientSay, @ClientSay);

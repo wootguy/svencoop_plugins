@@ -4,7 +4,7 @@ CClientCommand g_ManualMapChange("map", "Changes map to <map> (admin only)", @Ma
 CClientCommand g_MapChangeMenu("mapchangemenu", "Displays the map change menu (admin only)", @DisplayMapChangeMenu);
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("animaliZed");
+  g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
   g_Module.ScriptInfo.SetMinimumAdminLevel(ADMIN_YES);
 }

@@ -3,7 +3,7 @@ const string g_BridgeFile = "scripts/plugins/store/discordbridge.txt";
 string lastMap = "";
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("animaliZed");
+  g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
 }
 

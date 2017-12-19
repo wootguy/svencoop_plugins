@@ -205,6 +205,10 @@ HookReturnCode PlayerSpawn(CBasePlayer@ pPlayer)
 void plrPostSpawn(int &in iIndex, Vector &in color)
 {
 	CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex(iIndex);
+
+	if (pPlayer is null || !pPlayer.IsConnected())
+		return;
+
 	setRenderMode(pPlayer, kRenderNormal, kRenderFxGlowShell, 4, color, false);
 }
 

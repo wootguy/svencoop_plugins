@@ -4,12 +4,14 @@ CCVar@ g_Interval;
 CScheduledFunction@ g_pThinkFunc = null;
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("animaliZed");
+  g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
   g_Module.ScriptInfo.SetMinimumAdminLevel(ADMIN_YES);
   
-  @g_Msg = CCVar("msg", "Please configure msg.msg", "The text to display", ConCommandFlag::AdminOnly);
+  @g_Msg      = CCVar("msg", "Welcome to the twilightzone!", "The text to display", ConCommandFlag::AdminOnly);
   @g_Interval = CCVar("interval", 421.0f, "Repeat every x seconds", ConCommandFlag::AdminOnly);
+
+  MapInit();
 }
 
 void MapInit() {
@@ -20,5 +22,5 @@ void MapInit() {
 }
 
 void msgthink() {
-  g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, g_Msg.GetString() + "\n");
+  g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] " + g_Msg.GetString() + "\n");
 }

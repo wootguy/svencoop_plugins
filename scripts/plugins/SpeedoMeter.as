@@ -3,7 +3,7 @@ CScheduledFunction@ g_pSpeedThinkFunc = null;
 dictionary g_PlayerSpeed;
 
 void PluginInit() {
-  g_Module.ScriptInfo.SetAuthor("Nero & animaliZed");
+  g_Module.ScriptInfo.SetAuthor("Nero & incognico");
   g_Module.ScriptInfo.SetContactInfo("Nero & nico @ Svencoop forums");
   
   g_Hooks.RegisterHook(Hooks::Player::ClientSay, @ClientSay);
