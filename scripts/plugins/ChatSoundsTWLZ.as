@@ -75,6 +75,7 @@ void ReadSounds() {
     }
     file.Close();
     @g_SoundListKeys = g_SoundList.getKeys();
+    g_SoundListKeys.sortAsc();
   }
 }
 
