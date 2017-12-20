@@ -168,8 +168,10 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
 
       pParams.ShouldHide = true;
 
-      setpitch(steamId, pArgs[1]);
+      setpitch(steamId, pArguments[1]);
       g_PlayerFuncs.SayText(pPlayer, "[ChatSounds] Pitch set to: " + int(g_Pitch[steamId]) + ".\n");
+
+      return HOOK_HANDLED;
     }
   }
   return HOOK_CONTINUE;
