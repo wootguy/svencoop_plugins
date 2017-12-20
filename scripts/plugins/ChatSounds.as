@@ -96,7 +96,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
 
       if (d < g_Delay) {
         float w = float(g_Delay - d) / 1000.0f;
-        g_PlayerFuncs.PrintKeyBindingString(pPlayer, "Wait " + ceil(w) + " seconds\n");
+        g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTCENTER, "Wait " + ceil(w) + " seconds\n");
         return HOOK_CONTINUE;
       }
       else {
