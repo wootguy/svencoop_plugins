@@ -113,7 +113,7 @@ void cspitch(const CCommand@ pArgs) {
   if (pArgs.ArgC() < 2)
     return;
 
-  g_Pitch[steamId] = Math.clamp(45, 225, atoi(pArgs[1]));
+  setpitch(steamId, pArgs[1]);
   g_PlayerFuncs.SayText(pPlayer, "[ChatSounds] Pitch set to: " + int(g_Pitch[steamId]) + ".\n");
 }
 
@@ -162,6 +162,15 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
         return HOOK_HANDLED;
       }
     }
+    else if (pArguments.ArgC() > 1 && soundArg == '.cspitch') {
+      CBasePlayer@ pPlayer = pParams.GetPlayer();
+      const string steamId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
+
+      pParams.ShouldHide = true;
+
+      setpitch(steamId, pArgs[1]);
+      g_PlayerFuncs.SayText(pPlayer, "[ChatSounds] Pitch set to: " + int(g_Pitch[steamId]) + ".\n");
+    }
   }
   return HOOK_CONTINUE;
 }
@@ -174,6 +183,10 @@ HookReturnCode ClientPutInServer(CBasePlayer@ pPlayer) {
 HookReturnCode ClientDisconnect(CBasePlayer@ pPlayer) {
    g_Delay = g_Delay - 800;
    return HOOK_CONTINUE;
+}
+
+void setpitch(string steamId, string val) {
+  g_Pitch[steamId] = Math.clamp(45, 245, atoi(val));
 }
 
 string format_float(float f) {
