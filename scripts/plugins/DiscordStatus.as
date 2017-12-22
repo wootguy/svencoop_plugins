@@ -1,3 +1,5 @@
+// to use with misc/scdiscordbridge.pl
+
 const string g_BridgeFile = "scripts/plugins/store/discordbridge.txt";
 
 string lastMap = "";
@@ -11,26 +13,16 @@ void MapStart() {
   if( g_Scheduler.GetCurrentFunction() !is null )
     g_Scheduler.ClearTimerList();
 
-  g_Scheduler.SetTimeout( "AnnounceMap", 25 );
+  g_Scheduler.SetTimeout( "AnnounceMap", 25 ); // will be 0 at MapStart() otherwise
 }
 
 void AnnounceMap() {
-  int numPlayers = 0;
-
-  CBasePlayer@ pPlayer = null;
-  for( int i = 1; i <= g_Engine.maxClients; ++i ) {
-    @pPlayer = g_PlayerFuncs.FindPlayerByIndex( i );
-
-    if( pPlayer !is null && pPlayer.IsConnected() )
-      numPlayers++;
-  }
-
-  if( numPlayers == 0 || g_Engine.mapname == lastMap )
+  if( g_PlayerFuncs.GetNumPlayers() == 0 || g_Engine.mapname == lastMap )
     return;
 
   lastMap = g_Engine.mapname;
 
-  string append = "" + g_Engine.mapname + " " + numPlayers + "\n";
+  string append = "" + g_Engine.mapname + " " + g_PlayerFuncs.GetNumPlayers() + "\n";
   AppendFile( append );
 }
 
