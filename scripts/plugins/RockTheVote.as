@@ -1184,7 +1184,8 @@ void ChooseMap(string chosenMap, bool forcechange)
   {
 
     g_Log.PrintF("[RTV] Changing map to \"%1\"\n", chosenMap);
-    g_EngineFuncs.ChangeLevel(chosenMap);
+    //g_EngineFuncs.ChangeLevel(chosenMap);
+    g_EngineFuncs.ServerCommand("changelevel " + chosenMap + "\n");
 
   }
   //Change after X Seconds

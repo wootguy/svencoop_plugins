@@ -65,5 +65,6 @@ void MapChange(const string map, const string pName) {
 }
 
 void ChangeLevelCmd(const string map) {
+  //g_EngineFuncs.ChangeLevel(map);
   g_EngineFuncs.ServerCommand("changelevel " + map + "\n");
 }
