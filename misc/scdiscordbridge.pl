@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+# to use with scripts/plugins/DiscordStatus.as
+
 use 5.16.0;
 
 use utf8; 
