@@ -1337,7 +1337,7 @@ HookReturnCode ClientDisconnect( CBasePlayer@ pPlayer ){
 	return HOOK_CONTINUE;
 }
 
-void ChatCheck2( SayParameters@ m_pArgs ) {
+HookReturnCode ClientSay2( SayParameters@ pParams ) {
 	string str = m_pArgs.GetCommand();
 	str.ToUppercase();
 	bool strTest = false;
@@ -1350,11 +1350,8 @@ void ChatCheck2( SayParameters@ m_pArgs ) {
 		string aStr = g_diffy.getOldMessage()+"\n";
 		g_Game.AlertMessage( at_logged, aStr );
 		g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, aStr );
+		return HOOK_HANDLED;
 	}
-}
-
-HookReturnCode ClientSay2( SayParameters@ pParams ) {
-	ChatCheck2( pParams );
 	
 	return HOOK_CONTINUE;
 }
