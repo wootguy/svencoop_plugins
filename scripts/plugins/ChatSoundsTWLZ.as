@@ -24,7 +24,7 @@ dictionary g_Pitch;
 array<string> @g_SoundListKeys;
 
 CClientCommand g_ListSounds("listsounds", "List all chat sounds", @listsounds);
-CClientCommand g_CSPitch("cspitch", "Sets the pitch at which your ChatSounds play (50-200)", @cspitch);
+CClientCommand g_CSPitch("cspitch", "Sets the pitch at which your ChatSounds play (45-245)", @cspitch);
 
 void PluginInit() {
   g_Module.ScriptInfo.SetAuthor("incognico");
@@ -145,7 +145,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
       else {
         if (soundArg == 'medic' || soundArg == 'meedic') {
           pPlayer.ShowOverheadSprite('sprites/saveme.spr', 51.0f, 3.5f);
-          g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, string(g_SoundList[soundArg]), 1.0f, 0.2f, 0, Math.RandomLong(75, 200), 0, true, pPlayer.pev.origin);
+          g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, string(g_SoundList[soundArg]), 1.0f, 0.2f, 0, Math.RandomLong(50, 175), 0, true, pPlayer.pev.origin);
         }
         else {
           pPlayer.ShowOverheadSprite(Math.RandomLong(0, 1) == 0 ? g_SpriteName : g_SpriteName2, 56.0f, 2.25f);
@@ -160,7 +160,13 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
           }
         }
         g_ChatTimes[steamId] = t;
-        return HOOK_HANDLED;
+
+        if ( pArguments.ArgC() == 1 ) {
+          return HOOK_HANDLED;
+        }
+        else {
+          return HOOK_CONTINUE;
+        }
       }
     }
     else if (pArguments.ArgC() > 1 && soundArg == '.cspitch') {
