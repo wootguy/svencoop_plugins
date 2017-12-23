@@ -1192,6 +1192,9 @@ void ChooseMap(string chosenMap, bool forcechange)
   if (g_WhenToChange.GetInt() > 0)
   {
 
+    NetworkMessage message(MSG_ALL, NetworkMessages::SVC_INTERMISSION, null);
+    message.End();
+
     g_Scheduler.SetTimeout("ChooseMap", g_WhenToChange.GetInt(), chosenMap, true);
 
   }

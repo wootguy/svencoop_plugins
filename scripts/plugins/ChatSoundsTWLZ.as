@@ -126,9 +126,6 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
     if (g_SoundList.exists(soundArg)) {
       CBasePlayer@ pPlayer = pParams.GetPlayer();
       const string steamId = g_EngineFuncs.GetPlayerAuthId(pPlayer.edict());
-
-      //if ( pArguments.ArgC() == 1 )
-      //  pParams.ShouldHide = true;
  
       if (!g_ChatTimes.exists(steamId))
         g_ChatTimes[steamId] = 0;
@@ -139,12 +136,16 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
       if (d < g_Delay) {
         float w = float(g_Delay - d) / 1000.0f;
         g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTCENTER, "Wait " + format_float(w) + " seconds\n");
-        return HOOK_CONTINUE;
+
+        if ( pArguments.ArgC() == 1 )
+          pParams.ShouldHide = true;
+
+        return HOOK_HANDLED;
       }
       else {
         if (soundArg == 'medic' || soundArg == 'meedic') {
           pPlayer.ShowOverheadSprite('sprites/saveme.spr', 51.0f, 3.5f);
-          g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, string(g_SoundList[soundArg]), 1.0f, 0.2f, 0, Math.RandomLong(75, 125), 0, true, pPlayer.pev.origin);
+          g_SoundSystem.PlaySound(pPlayer.edict(), CHAN_AUTO, string(g_SoundList[soundArg]), 1.0f, 0.2f, 0, Math.RandomLong(75, 200), 0, true, pPlayer.pev.origin);
         }
         else {
           pPlayer.ShowOverheadSprite(Math.RandomLong(0, 1) == 0 ? g_SpriteName : g_SpriteName2, 56.0f, 2.25f);

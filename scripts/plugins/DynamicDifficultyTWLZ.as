@@ -1366,7 +1366,6 @@ void AppendHostname() {
 		string dStr = "" + string(difficultInt/10) + "." + string(difficultInt%10) + "%";
 		string hostname = "hostname \"" + g_EngineFuncs.CVarGetString("hostname") + " | difficulty: " + dStr + "\"\n";
 		g_EngineFuncs.ServerCommand(hostname);
-		g_EngineFuncs.ServerExecute();
         }
 }
 
@@ -1390,7 +1389,9 @@ void RestartMap() {
 }
 
 void ReloadMap() {
-	g_EngineFuncs.ChangeLevel(g_Engine.mapname);
+	//g_EngineFuncs.ChangeLevel(g_Engine.mapname);
+	g_EngineFuncs.ServerCommand("changelevel " + g_Engine.mapname + "\n");
+
 }
 
 void ForceHardcore(const CCommand@ args) {
