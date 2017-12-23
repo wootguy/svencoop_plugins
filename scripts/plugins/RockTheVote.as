@@ -182,7 +182,7 @@ void PluginInit()
   g_Hooks.RegisterHook(Hooks::Game::MapChange, @ResetVars);
   g_Hooks.RegisterHook(Hooks::Player::ClientSay, @Decider);
 
-  @g_SecondsUntilVote = CCVar("secondsUntilVote", 120, "Delay before players can RTV after map has started", ConCommandFlag::AdminOnly);
+  @g_SecondsUntilVote = CCVar("secondsUntilVote", 3, "Delay before players can RTV after map has started", ConCommandFlag::AdminOnly);
   @g_MapList = CCVar("szMapListPath", "mapcycle.txt", "Path to list of maps to use. Defaulted to map cycle file", ConCommandFlag::AdminOnly);
   @g_WhenToChange = CCVar("iChangeWhen", 0, "When to change maps post-vote: <0 for end of map, 0 for immediate change, >0 for seconds until change", ConCommandFlag::AdminOnly);
   @g_MaxMapsToVote = CCVar("iMaxMaps", 9, "How many maps can players nominate and vote for later", ConCommandFlag::AdminOnly);
@@ -220,14 +220,22 @@ void MapActivate()
   @g_TimeToVote = null;
   @g_TimeUntilVote = null;
   secondsleftforvote = g_VotingPeriodTime.GetInt();
-
+  
+  rtv_plr_data.resize(0);
   rtv_plr_data.resize(g_Engine.maxClients);
 
-  for (uint i = 0; i < rtv_plr_data.length(); i++)
-    @rtv_plr_data[i] = null;
+  for (int i = 1; i <= g_Engine.maxClients; i++)
+  {
 
-    forcenommaps.resize(0);
-    maplist.resize(0);
+    CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex(i);
+
+    if(pPlayer !is null)
+      AddPlayer(pPlayer);
+
+  }
+
+  forcenommaps.resize(0);
+  maplist.resize(0);
 
   if(@rtvmenu !is null)
   {
