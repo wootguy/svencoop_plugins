@@ -129,8 +129,9 @@ HookReturnCode ClientSay( SayParameters@ pParams ) {
      return HOOK_CONTINUE;
 
   CBasePlayer@ pPlayer = pParams.GetPlayer();
+  const string steamId = g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() );
 
-  AppendFromSven( "<" + pPlayer.pev.netname + "> " + pParams.GetCommand() + "\n" );
+  AppendFromSven( "<" + pPlayer.pev.netname + "><" + steamId + "> " + pParams.GetCommand() + "\n" );
 
   return HOOK_CONTINUE;
 }
