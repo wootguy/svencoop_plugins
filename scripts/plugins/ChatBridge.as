@@ -25,10 +25,11 @@ void PluginInit() {
     g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @ClientPutInServer);
   }
 
-  MapInit();
+  MapStart();
 }
 
-void MapInit() {
+void MapStart() {
+  TruncateFromSven();
   FlushFromSven();
 
   if ( sf_LinkChat is null )
@@ -114,10 +115,10 @@ void AppendFromSven( string append ) {
 }
 
 HookReturnCode MapChange() {
-  if ( sf_LinkChat !is null )
+  if ( sf_LinkChat !is null ) {
     g_Scheduler.RemoveTimer( sf_LinkChat );
-
-  TruncateFromSven();
+    @sf_LinkChat = null;
+  }
 
   return HOOK_CONTINUE;
 }
