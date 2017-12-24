@@ -1338,7 +1338,7 @@ HookReturnCode ClientDisconnect( CBasePlayer@ pPlayer ){
 }
 
 HookReturnCode ClientSay2( SayParameters@ pParams ) {
-	string str = m_pArgs.GetCommand();
+	string str = pParams.GetCommand();
 	str.ToUppercase();
 	bool strTest = false;
 

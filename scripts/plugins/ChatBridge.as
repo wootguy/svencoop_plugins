@@ -1,38 +1,43 @@
+// config:
+// files must exist before loading this script !!!
+const string g_FromSven = "scripts/plugins/store/_fromsven.txt";
+const string g_ToSven   = "scripts/plugins/store/_tosven.txt";
+const bool joinsquits   = false; // also writes joining and leaving players (spammy)
+const float delay       = 1.75f; // flush this often (sec.), don't set too low
+const float statusdelay = 25.0f; // wait this long after map change before writing status line (player count will be too low if this is set to ~0-10)
+//////////
+
 File@ f_FromSven;
 File@ f_ToSven;
-
 CScheduledFunction@ sf_LinkChat    = null;
 CScheduledFunction@ sf_StatusTimer = null;
-
-const string g_FromSven = "scripts/plugins/store/chatfromsven.txt";
-const string g_ToSven   = "scripts/plugins/store/chattosven.txt";
-
-string lastMap  = "";
-string lastFrom = "";
-string lastTo   = "";
+string lastMap = "";
 
 void PluginInit() {
   g_Module.ScriptInfo.SetAuthor("incognico");
   g_Module.ScriptInfo.SetContactInfo("irc://irc.rizon.net/#/dev/null");
 
+  g_Hooks.RegisterHook(Hooks::Game::MapChange, @MapChange);
   g_Hooks.RegisterHook(Hooks::Player::ClientSay, @ClientSay);
-//  g_Hooks.RegisterHook(Hooks::Player::ClientDisconnect, @ClientDisconnect);
-//  g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @ClientPutInServer);
 
-  MapStart();
+  if ( joinsquits ) {
+    g_Hooks.RegisterHook(Hooks::Player::ClientDisconnect, @ClientDisconnect);
+    g_Hooks.RegisterHook(Hooks::Player::ClientPutInServer, @ClientPutInServer);
+  }
+
+  MapInit();
 }
 
-void MapStart() {
-  TruncateFromSven();
+void MapInit() {
   FlushFromSven();
 
   if ( sf_LinkChat is null )
-    @sf_LinkChat = g_Scheduler.SetInterval( "ChatLink", 1.5f );
+    @sf_LinkChat = g_Scheduler.SetInterval( "ChatLink", delay );
 
   if ( sf_StatusTimer !is null )
     g_Scheduler.RemoveTimer( sf_StatusTimer );
 
-  @sf_StatusTimer = g_Scheduler.SetTimeout( "ServerStatus", 25 ); // will be 0 at MapStart() otherwise
+  @sf_StatusTimer = g_Scheduler.SetTimeout( "ServerStatus", statusdelay );
 
   if ( g_Engine.mapname == "_server_start" )
     return;
@@ -84,43 +89,51 @@ void FlushToSven() {
     string sLine;
     f_ToSven.ReadLine( sLine );
 
-    if ( sLine.IsEmpty() || lastTo == sLine )
+    if ( sLine.IsEmpty() )
       continue;
 
     g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, sLine + "\n" );
-    lastTo = sLine;
 
     truncate = true;
   }
 
   f_ToSven.Close();
 
-  if ( truncate ) {
-    @f_ToSven = g_FileSystem.OpenFile( g_ToSven, OpenFile::WRITE );
-    f_ToSven.Write( null );
-    f_ToSven.Close();
-  }
+  if ( truncate )
+    TruncateToSven();
+}
+  
+void TruncateToSven() {
+  @f_ToSven = g_FileSystem.OpenFile( g_ToSven, OpenFile::WRITE );
+  f_ToSven.Write( null );
+  f_ToSven.Close();
 }
 
 void AppendFromSven( string append ) {
-    f_FromSven.Write( append );
+  f_FromSven.Write( append );
+}
+
+HookReturnCode MapChange() {
+  if ( sf_LinkChat !is null )
+    g_Scheduler.RemoveTimer( sf_LinkChat );
+
+  TruncateFromSven();
+
+  return HOOK_CONTINUE;
 }
 
 HookReturnCode ClientSay( SayParameters@ pParams ) {
   const CCommand@ pArgs = pParams.GetArguments();
 
-  if ( pArgs.ArgC() < 1 || lastFrom == pParams.GetCommand() )
+  if ( pArgs.ArgC() < 1 )
      return HOOK_CONTINUE;
 
   CBasePlayer@ pPlayer = pParams.GetPlayer();
 
   AppendFromSven( "<" + pPlayer.pev.netname + "> " + pParams.GetCommand() + "\n" );
-  lastFrom = pParams.GetCommand();
 
   return HOOK_CONTINUE;
 }
-
-/* too spammy
 
 HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer ) {
   const string steamId = g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() );
@@ -137,4 +150,3 @@ HookReturnCode ClientDisconnect( CBasePlayer@ pPlayer ) {
 
   return HOOK_CONTINUE;
 }
-*/
