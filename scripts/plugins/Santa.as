@@ -18,6 +18,7 @@ const array<string> g_MapBlacklist = {
 'bm_sts',
 'bossbattle',
 'ctf_warforts',
+'quad_f',
 'ra_quad',
 'shitty_pubg'
 };
