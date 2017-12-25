@@ -1,6 +1,14 @@
-const array<string> g_ModelList = { 'replacemodel1', 'replacemodel2' };
+const array<string> g_ModelList = {
+'bs_unarmored_barney_2',
+'cl_gus',
+'hevsnark'
+};
 
-const array<string> g_AdditionalModelList = { 'onlyprecachemodel1', 'onlyprecachemodel2' };
+const array<string> g_AdditionalModelList = {
+'cap_hl_construction_2',
+'drill_sharpe',
+'silvershroud'
+};
 
 const array<string> g_WheelchairModelList = {
 'sci_wheelchair',
@@ -8,7 +16,7 @@ const array<string> g_WheelchairModelList = {
 'soldier_wheelchair'
 };
 
-const int g_MaxVotes = 2;
+const int g_MaxVotes = 0;
 bool g_Wheelchair = false;
 bool g_WheelchairPrev = false;
 int g_VoteCount = 0;
@@ -39,8 +47,10 @@ void MapInit() {
     g_Game.PrecacheGeneric("models/player/" + g_AdditionalModelList[i] + "/" + g_AdditionalModelList[i] + ".mdl");
   }
 
-  for (uint i = 0; i < g_WheelchairModelList.length(); ++i) {
-    g_Game.PrecacheGeneric("models/player/" + g_WheelchairModelList[i] + "/" + g_WheelchairModelList[i] + ".mdl");
+  if ( g_MaxVotes > 0 ) {
+    for (uint i = 0; i < g_WheelchairModelList.length(); ++i) {
+      g_Game.PrecacheGeneric("models/player/" + g_WheelchairModelList[i] + "/" + g_WheelchairModelList[i] + ".mdl");
+    }
   }
 
   g_Wheelchair = false;
@@ -92,7 +102,7 @@ HookReturnCode ClientPutInServer(CBasePlayer@ pPlayer) {
 
         const string HelmetReplacement = g_ModelList[Math.RandomLong(0, g_ModelList.length()-1)];
         pInfos.SetValue("model", HelmetReplacement);
-        g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] " + pPlayer.pev.netname + " uses model 'helmet', replacing with '" + HelmetReplacement + "'.\n");
+	g_Scheduler.SetTimeout("ShowMsg", 10, HelmetReplacement, g_EngineFuncs.IndexOfEdict(pPlayer.edict()));
       }
     }
     return HOOK_CONTINUE;
@@ -100,21 +110,29 @@ HookReturnCode ClientPutInServer(CBasePlayer@ pPlayer) {
   return HOOK_CONTINUE;
 }
 
+void ShowMsg(string HelmetReplacement, int pIndex) {
+  CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex(pIndex);
+  if (pPlayer !is null && pPlayer.IsConnected()) {
+    g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTTALK, "[Info] You are using the default model 'helmet', replacing it with '" + HelmetReplacement + "'.\n");
+    g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTTALK, "[Info] Download the big player model pack at  https://goo.gl/XYgma1  to fully enjoy the server.\n");
+  }
+}
+
 HookReturnCode ClientSay(SayParameters@ pParams) {
   const CCommand@ pArguments = pParams.GetArguments();
 
-  if (pArguments.ArgC() > 0 && (pArguments.Arg(0).ToLowercase() == "wheelchairs?" || pArguments.Arg(0).ToLowercase() == "wheelchairs" || pArguments.Arg(0).ToLowercase() == "wheelchair")) {
+  if (pArguments.ArgC() > 0 && (pArguments.Arg(0).ToLowercase() == "wheelchairs?" || pArguments.Arg(0).ToLowercase() == "wheelchairs" || pArguments.Arg(0).ToLowercase() == "wheelchair?")) {
     if (g_Wheelchair) {
       g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Wheelchairs are already enabled, blocking vote.\n");
     }
     else if (g_VoteCount >= g_MaxVotes) {
-      g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Maximum tries to enable wheelchairs reached, try again after map change.\n");
+      g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Maximum tries to enable wheelchairs reached or wheelchair mode is disabled.\n");
     }
     else if (g_Map.HasForcedPlayerModels()) {
       g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Wheelchairs are not available on this map.\n");
     }
     else {
-      Vote@ WCVote = Vote('Wheelchairs?', 'Force players into wheelchairs until the end of the map?', 15.0f, 66.6f);
+      Vote@ WCVote = Vote('Wheelchairs?', 'Force players into wheelchairs until the end of the map?', 15.0f, 75.0f);
       WCVote.SetYesText('Yes, let\'s roll');
       WCVote.SetNoText('No, keep walking');
       WCVote.SetVoteBlockedCallback(@WCVoteBlocked);
@@ -212,9 +230,11 @@ void ListPrecachedModels(const CCommand@ pArgs) {
     g_PlayerFuncs.ClientPrint(pCaller, HUD_PRINTCONSOLE, g_AdditionalModelList[i] + "\n");
   }
 
-  g_PlayerFuncs.ClientPrint(pCaller, HUD_PRINTCONSOLE, "--Wheelchair--------------\n");
+  if ( g_MaxVotes > 0 ) {
+    g_PlayerFuncs.ClientPrint(pCaller, HUD_PRINTCONSOLE, "--Wheelchair--------------\n");
 
-  for (uint i = 0; i < g_WheelchairModelList.length(); ++i) {
-    g_PlayerFuncs.ClientPrint(pCaller, HUD_PRINTCONSOLE, g_WheelchairModelList[i] + "\n");
+    for (uint i = 0; i < g_WheelchairModelList.length(); ++i) {
+      g_PlayerFuncs.ClientPrint(pCaller, HUD_PRINTCONSOLE, g_WheelchairModelList[i] + "\n");
+    }
   }
 }
