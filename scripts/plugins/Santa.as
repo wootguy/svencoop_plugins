@@ -20,7 +20,8 @@ const array<string> g_MapBlacklist = {
 'ctf_warforts',
 'quad_f',
 'ra_quad',
-'shitty_pubg'
+'shitty_pubg',
+'th_escape'
 };
 ///////////
 
