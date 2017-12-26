@@ -11,7 +11,7 @@ const string g_batterymodel 	= "models/xmas/alberto309/present2.mdl";
 const string g_snowmanmodel 	= "models/xmas/alberto309/snowman.mdl";
 const string g_painsound 	= "fgrunt/gr_pain6.wav";
 const string g_effectsound 	= "debris/beamstart4.wav";
-const array<string> g_monsters 	= { "monster_headcrab", "monster_babycrab", "monster_snark", "monster_shockroach", "monster_cockroach", "monster_rat" }; // monster_chumtoad too strong
+const array<string> g_monsters 	= { "monster_headcrab", "monster_babycrab", "monster_snark", "monster_cockroach", "monster_rat" }; // monster_chumtoad too strong, monster_shockroach buggy since 5.15
 const array<string> g_spawnents = { 'info_player_start', 'info_player_deathmatch', 'info_player_coop', 'info_player_dm2' };
 
 const array<string> g_MapBlacklist = {
