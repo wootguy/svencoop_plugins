@@ -34,6 +34,9 @@ void MapStart() {
   if ( sf_LinkChat is null )
     @sf_LinkChat = g_Scheduler.SetInterval( "ChatLink", delay );
 
+  if ( sf_StatusTimer !is null )
+    g_Scheduler.RemoveTimer( sf_StatusTimer );
+
   @sf_StatusTimer = g_Scheduler.SetTimeout( "ServerStatus", statusdelay );
 }
 
