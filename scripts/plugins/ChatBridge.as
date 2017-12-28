@@ -11,7 +11,6 @@ File@ f_FromSven;
 File@ f_ToSven;
 CScheduledFunction@ sf_LinkChat    = null;
 CScheduledFunction@ sf_StatusTimer = null;
-string lastMap = "";
 
 void PluginInit() {
   g_Module.ScriptInfo.SetAuthor("incognico");
@@ -48,10 +47,8 @@ void MapStart() {
 }
 
 void ServerStatus() {
-  if( g_PlayerFuncs.GetNumPlayers() == 0 || g_Engine.mapname == lastMap )
+  if( g_PlayerFuncs.GetNumPlayers() == 0 )
     return;
-
-  lastMap = g_Engine.mapname;
 
   string append = "status " + g_Engine.mapname + " " + g_PlayerFuncs.GetNumPlayers() + "\n";
   AppendFromSven( append );
