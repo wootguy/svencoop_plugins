@@ -4,13 +4,14 @@ const string g_FromSven = "scripts/plugins/store/_fromsven.txt";
 const string g_ToSven   = "scripts/plugins/store/_tosven.txt";
 const bool joinsquits   = false; // also writes joining and leaving players (spammy)
 const float delay       = 1.75f; // flush this often (sec.), don't set too low
-const float statusdelay = 25.0f; // wait this long after map change before writing status line (player count will be too low if this is set to ~0-10)
+const float statusdelay = 15.0f; // wait this long after map change before writing status line
 //////////
 
 File@ f_FromSven;
 File@ f_ToSven;
 CScheduledFunction@ sf_LinkChat    = null;
 CScheduledFunction@ sf_StatusTimer = null;
+int oldCount = 0;
 
 void PluginInit() {
   g_Module.ScriptInfo.SetAuthor("incognico");
@@ -29,29 +30,20 @@ void PluginInit() {
 
 void MapStart() {
   TruncateFromSven();
-  FlushFromSven();
 
   if ( sf_LinkChat is null )
     @sf_LinkChat = g_Scheduler.SetInterval( "ChatLink", delay );
 
-  if ( sf_StatusTimer !is null )
-    g_Scheduler.RemoveTimer( sf_StatusTimer );
-
   @sf_StatusTimer = g_Scheduler.SetTimeout( "ServerStatus", statusdelay );
-
-  if ( g_Engine.mapname == "_server_start" )
-    return;
-  
-  string append = "map " + g_Engine.mapname + "\n";
-  AppendFromSven( append );
 }
 
 void ServerStatus() {
-  if( g_PlayerFuncs.GetNumPlayers() == 0 )
+  if( g_Engine.mapname == "_server_start" )
     return;
 
-  string append = "status " + g_Engine.mapname + " " + g_PlayerFuncs.GetNumPlayers() + "\n";
+  string append = ( g_PlayerFuncs.GetNumPlayers() > oldCount ) ? "status " + g_Engine.mapname + " " + g_PlayerFuncs.GetNumPlayers() + "\n" : "status " + g_Engine.mapname + " " + oldCount + "\n";
   AppendFromSven( append );
+  oldCount = 0;
 }
 
 void ChatLink() {
@@ -116,6 +108,8 @@ HookReturnCode MapChange() {
     g_Scheduler.RemoveTimer( sf_LinkChat );
     @sf_LinkChat = null;
   }
+
+  oldCount = g_PlayerFuncs.GetNumPlayers();
 
   return HOOK_CONTINUE;
 }
