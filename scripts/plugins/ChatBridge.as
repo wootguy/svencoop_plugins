@@ -44,7 +44,8 @@ void ServerStatus() {
   if( g_Engine.mapname == "_server_start" )
     return;
 
-  string append = ( g_PlayerFuncs.GetNumPlayers() > oldCount ) ? "status " + g_Engine.mapname + " " + g_PlayerFuncs.GetNumPlayers() + "\n" : "status " + g_Engine.mapname + " " + oldCount + "\n";
+  string count = g_PlayerFuncs.GetNumPlayers() > oldCount ? g_PlayerFuncs.GetNumPlayers() : oldCount;
+  string append = "status " + g_Engine.mapname + " " + count + "\n";
   AppendFromSven( append );
   oldCount = 0;
 }
@@ -107,11 +108,6 @@ void AppendFromSven( string append ) {
 }
 
 HookReturnCode MapChange() {
-  if ( sf_LinkChat !is null ) {
-    g_Scheduler.RemoveTimer( sf_LinkChat );
-    @sf_LinkChat = null;
-  }
-
   oldCount = g_PlayerFuncs.GetNumPlayers();
 
   return HOOK_CONTINUE;
