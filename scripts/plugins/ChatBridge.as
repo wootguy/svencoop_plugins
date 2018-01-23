@@ -41,9 +41,6 @@ void MapStart() {
 }
 
 void ServerStatus() {
-  if( g_Engine.mapname == "_server_start" )
-    return;
-
   string count = g_PlayerFuncs.GetNumPlayers() > oldCount ? g_PlayerFuncs.GetNumPlayers() : oldCount;
   string append = "status " + g_Engine.mapname + " " + count + "\n";
   AppendFromSven( append );
