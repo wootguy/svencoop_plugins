@@ -11,7 +11,7 @@ const string g_batterymodel 	= "models/xmas/alberto309/present2.mdl";
 const string g_snowmanmodel 	= "models/xmas/alberto309/snowman.mdl";
 const string g_painsound 	= "fgrunt/gr_pain6.wav";
 const string g_effectsound 	= "debris/beamstart4.wav";
-const array<string> g_monsters 	= { "monster_headcrab", "monster_babycrab", "monster_snark", "monster_cockroach", "monster_rat" }; // monster_chumtoad too strong, monster_shockroach buggy since 5.15
+const array<string> g_monsters 	= { "monster_headcrab", "monster_babycrab", "monster_snark", "monster_cockroach", "monster_rat", "monster_shockroach" }; // monster_chumtoad too strong
 const array<string> g_spawnents = { 'info_player_start', 'info_player_deathmatch', 'info_player_coop', 'info_player_dm2' };
 
 const array<string> g_MapBlacklist = {
@@ -20,6 +20,8 @@ const array<string> g_MapBlacklist = {
 'ctf_warforts',
 'quad_f',
 'ra_quad',
+'rust_island_b5',
+'rust_islands_b6',
 'shitty_pubg',
 'th_escape'
 };
@@ -160,7 +162,7 @@ HookReturnCode PlayerKilled( CBasePlayer@ pPlayer, CBaseEntity@ pAttacker, int i
 	
 	string originStr = "" + pPlayer.pev.origin.x + " " + pPlayer.pev.origin.y + " " + pPlayer.pev.origin.z;
 
-	switch ( Math.RandomLong( 0, 10 ) ) {
+	switch ( Math.RandomLong( 0, 9 ) ) {
 		case 1:
 		{
 			dictionary keyvalues = {
@@ -232,10 +234,10 @@ HookReturnCode PlayerKilled( CBasePlayer@ pPlayer, CBaseEntity@ pAttacker, int i
 		}
 		break;
 
-		case 10:
+		case 9:
 		{
-			if ( Math.RandomLong(0, 1) == 0 )
-				break;
+			//if ( Math.RandomLong(0, 1) == 0 )
+			//	break;
 
 			string steamId = g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() );
 
@@ -251,7 +253,7 @@ HookReturnCode PlayerKilled( CBasePlayer@ pPlayer, CBaseEntity@ pAttacker, int i
 
 			dictionary keyvalues = {
 				{ "model", g_helpermodel },
-				{ "health", "30" },
+				{ "health", "99" },
 				{ "gag", "-1" },
 				{ "origin", originStr },
 				{ "is_player_ally", "1" },
