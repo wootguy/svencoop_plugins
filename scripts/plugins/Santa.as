@@ -253,7 +253,7 @@ HookReturnCode PlayerKilled( CBasePlayer@ pPlayer, CBaseEntity@ pAttacker, int i
 
 			dictionary keyvalues = {
 				{ "model", g_helpermodel },
-				{ "health", "99" },
+				{ "health", "66" },
 				{ "gag", "-1" },
 				{ "origin", originStr },
 				{ "is_player_ally", "1" },
