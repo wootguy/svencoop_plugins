@@ -61,7 +61,7 @@ void MapChange(const string map, const string pName) {
   // Will be available at some point, waiting for SC update:
   NetworkMessage message(MSG_ALL, NetworkMessages::SVC_INTERMISSION, null);
   message.End();
-  g_Scheduler.SetTimeout("ChangeLevelCmd", 3.5f, map);
+  g_Scheduler.SetTimeout("ChangeLevelCmd", 5.0f, map);
 }
 
 void ChangeLevelCmd(const string map) {

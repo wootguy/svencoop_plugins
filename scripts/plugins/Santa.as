@@ -18,6 +18,7 @@ const array<string> g_MapBlacklist = {
 'bm_sts',
 'bossbattle',
 'ctf_warforts',
+'road_to_shinnen',
 'rust_island_b5',
 'rust_islands_b6',
 'shitty_pubg',
@@ -398,6 +399,7 @@ void ReplaceItemModels() {
     CBaseEntity@ pEnt = null;
 
     // meh can't check for globalmodellist entries, it changes globally replaced models too then :/
+    // but somehow not in classic mode?
 
     while( ( @pEnt = g_EntityFuncs.FindEntityByClassname( pEnt, "item_healthkit" ) ) !is null ) {
         //if( pEnt.pev.model == "models/w_medkit.mdl" )
@@ -409,3 +411,4 @@ void ReplaceItemModels() {
             g_EntityFuncs.SetModel( pEnt, g_batterymodel );
     }
 }
+

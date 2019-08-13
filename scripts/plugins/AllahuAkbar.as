@@ -6,7 +6,9 @@ const int satchelcount = 8;
 
 const array<string> g_IgnoreMaps = {
 'bm_sts',
-'ctf_warforts'
+'ctf_warforts',
+'rust_mini_b7',
+'rust_mini_b8'
 };
 
 void PluginInit() {

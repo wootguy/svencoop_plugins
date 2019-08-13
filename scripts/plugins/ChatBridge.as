@@ -37,7 +37,12 @@ void MapStart() {
   if ( sf_StatusTimer !is null )
     g_Scheduler.RemoveTimer( sf_StatusTimer );
 
-  @sf_StatusTimer = g_Scheduler.SetTimeout( "ServerStatus", statusdelay );
+  if ( g_Engine.mapname == "_server_start" ) {
+    ServerStatus();
+  }
+  else {
+    @sf_StatusTimer = g_Scheduler.SetTimeout( "ServerStatus", statusdelay );
+  }
 }
 
 void ServerStatus() {

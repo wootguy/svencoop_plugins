@@ -45,6 +45,7 @@ const array<string> g_allowmaps = {
 'case7',
 'case8',
 'case9',
+'city_invasion',
 'co1a',
 'co1b',
 'co1c',
@@ -56,7 +57,76 @@ const array<string> g_allowmaps = {
 'co1i',
 'co1j',
 'co1k',
-'city_invasion',
+'crackfife_2012',
+'cracklife_c00',
+'cracklife_c01_a1',
+'cracklife_c01_a2',
+'cracklife_c02_a1',
+'cracklife_c02_a2',
+'cracklife_c03',
+'cracklife_c04',
+'cracklife_c05_a1',
+'cracklife_c05_a2',
+'cracklife_c05_a3',
+'cracklife_c06',
+'cracklife_c07_a1',
+'cracklife_c07_a2',
+'cracklife_c08_a1',
+'cracklife_c08_a2',
+'cracklife_c09',
+'cracklife_c10',
+'cracklife_c11_a1',
+'cracklife_c11_a2',
+'cracklife_c11_a3',
+'cracklife_c11_a4',
+'cracklife_c11_a5',
+'cracklife_c12',
+'cracklife_c13_a1',
+'cracklife_c13_a2',
+'cracklife_c13_a3',
+'cracklife_c13_a4',
+'cracklife_c14',
+'cracklife_c15',
+'cracklife_c16_a1',
+'cracklife_c16_a2',
+'cracklife_c16_a3',
+'cracklife_c16_a4',
+'cracklife_c17',
+'cracklife_c18',
+'crklf_c01_a1',
+'crklf_c01_a2',
+'crklf_c02_a1',
+'crklf_c02_a2',
+'crklf_c03',
+'crklf_c04',
+'crklf_c05_a1',
+'crklf_c05_a2',
+'crklf_c05_a3',
+'crklf_c06',
+'crklf_c07_a1',
+'crklf_c07_a2',
+'crklf_c08_a1',
+'crklf_c08_a2',
+'crklf_c09',
+'crklf_c10',
+'crklf_c11_a1',
+'crklf_c11_a2',
+'crklf_c11_a3',
+'crklf_c11_a4',
+'crklf_c11_a5',
+'crklf_c12',
+'crklf_c13_a1',
+'crklf_c13_a2',
+'crklf_c13_a3',
+'crklf_c13_a4',
+'crklf_c14',
+'crklf_c15',
+'crklf_c16_a1',
+'crklf_c16_a2',
+'crklf_c16_a3',
+'crklf_c16_a4',
+'crklf_c17',
+'crklf_c18',
 'e0a',            
 'e0b',            
 'e1a',             
@@ -69,6 +139,7 @@ const array<string> g_allowmaps = {
 'e1j',              
 'e2a',                
 'e2b',
+'escape_series',
 'escape_series_1a',
 'escape_series_1b',
 'escape_series_2a',
@@ -79,9 +150,8 @@ const array<string> g_allowmaps = {
 'escape_series_3a',
 'escape_series_3b',
 'escape_series_3c',
-'escape_series_3d', // electrofence at lift?
+'escape_series_3d',
 'escape_series_3e',
-'escape_series',
 'etc',
 'etc0b',
 'etc0b2',
@@ -129,7 +199,16 @@ const array<string> g_allowmaps = {
 'hl_c16_a4',
 'hl_c17',
 'hl_c18',
-'io_v1',
+'instinct_1',
+'instinct_10',
+'instinct_2',
+'instinct_3',
+'instinct_4',
+'instinct_5',
+'instinct_6',
+'instinct_7',
+'instinct_8',
+'instinct_9',
 'mistake_coop_a',
 'mistake_coop_b',
 'mistake_coop_c',
@@ -140,6 +219,7 @@ const array<string> g_allowmaps = {
 'mistake_coop_h',
 'mistake_coop_i',
 'mistake_coop_j',
+'mistake_credits_k',
 'of0a0',
 'of1a1',
 'of1a2',
@@ -247,7 +327,6 @@ const array<string> g_allowmaps = {
 'rl02t',
 'rl02w',
 'rl02y',
-'sc_another',
 'sectore_1',
 'sectore_2',
 'sectore_3',
@@ -270,6 +349,14 @@ const array<string> g_allowmaps = {
 'th_ep3_05',
 'th_ep3_06',
 'th_ep3_07',
+'tunnelvision_1',
+'tunnelvision_1b',
+'tunnelvision_1c',
+'tunnelvision_2',
+'tunnelvision_3',
+'tunnelvision_4',
+'tunnelvision_5',
+'tunnelvision_6',
 'uplink',
 'yabma'
 };
@@ -279,35 +366,35 @@ final class Diffy {
 	*	Difficulty choosed using number of People connected
 	*/
 	private array<double> diffPerPeep = {
-			0.70, //0
-			0.75, //1
-			0.76, //2
-			0.77, //3
-			0.78, //4
-			0.79, //5
-			0.80, //6
-			0.81, //7
-			0.82, //8
-			0.83, //9
-			0.84, //10
-			0.85, //11
-			0.86, //12
-			0.87, //13
-			0.88, //14
-			0.89, //15
-			0.90, //16
-			0.91, //17
-			0.92, //18
-			0.93, //19
-			0.94, //20
-			0.95, //21
-			0.96, //22
-			0.97, //23
-			0.98, //24
-			0.99, //25
-			0.999, //26
-			0.999, //27
-			0.999, //28
+			0.7  , //0
+			0.7  , //1
+			0.75 , //2
+			0.80 , //3
+			0.85 , //4
+			0.9  , //5
+			0.91 , //6
+			0.92 , //7
+			0.93 , //8
+			0.94 , //9
+			0.95 , //10
+			0.96 , //11
+			0.97 , //12
+			0.98 , //13
+			0.99 , //14
+			0.999, //15
+			1.000, //16
+			1.000, //17
+			1.000, //18
+			1.000, //19
+			1.000, //20
+			1.000, //21
+			1.000, //22
+			1.000, //23
+			1.000, //24
+			1.000, //25
+			1.000, //26
+			1.000, //27
+			1.000, //28
 			1.000, //29
 			1.000, //30
 			1.000, //31
@@ -714,7 +801,7 @@ final class Diffy {
 	}
 	
 	double getSkValue(int index){
-		uint iMax = diffBorders.length;
+		uint iMax = diffBorders.length();
 		
 		if(m_flAverageVoteDifficulty==1.0){
 			//g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, ""+skillMatrix[index][7]+"\n" );
@@ -725,7 +812,7 @@ final class Diffy {
 			
 				if(diffBorders[i]==m_flAverageVoteDifficulty){
 					return skillMatrix[index][i];
-				}else if(diffBorders.length>i && diffBorders[i+1]>m_flAverageVoteDifficulty){
+				}else if(diffBorders.length()>i && diffBorders[i+1]>m_flAverageVoteDifficulty){
 					double min = diffBorders[i];
 					double max = diffBorders[i+1];
 					double difference = (m_flAverageVoteDifficulty-min)/(max-min);
@@ -740,7 +827,7 @@ final class Diffy {
 	}
 	
 	double getEntchangeValue(int index){
-		uint iMax = diffBorders.length;
+		uint iMax = diffBorders.length();
 		
 		if(m_flAverageVoteDifficulty==1.0){
 			return entities_multiplyer[index][7];
@@ -750,7 +837,7 @@ final class Diffy {
 			
 				if(diffBorders[i]==m_flAverageVoteDifficulty){
 					return entities_multiplyer[index][i];
-				}else if(diffBorders.length>i && diffBorders[i+1]>m_flAverageVoteDifficulty){
+				}else if(diffBorders.length()>i && diffBorders[i+1]>m_flAverageVoteDifficulty){
 					double min = diffBorders[i];
 					double max = diffBorders[i+1];
 					double difference = (m_flAverageVoteDifficulty-min)/(max-min);

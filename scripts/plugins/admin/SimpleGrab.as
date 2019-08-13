@@ -61,10 +61,15 @@ void MapInit()
 {
 	g_SoundSystem.PrecacheSound( "items/r_item1.wav" );
 	g_SoundSystem.PrecacheSound( "items/r_item2.wav" );  
-  
-	for ( int i = 1; i <= g_Engine.maxClients; ++i )
+}
+
+void MapStart()
+{
+	CBasePlayer@ pPlayer;
+
+	for ( int i = 1; i <= g_Engine.maxClients; i++ )
 	{
-		CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex( i );
+		@pPlayer = g_PlayerFuncs.FindPlayerByIndex( i );
 		if ( pPlayer is null )
 			continue;
 
@@ -281,7 +286,10 @@ void Grab( const CCommand@ pArgs )
 
 		TraceResult tr;
 		g_Utility.TraceLine( vecViewPos, vecViewPos + ( vec * 4096 ), dont_ignore_monsters, pPlayer.edict(), tr );
-		
+
+		if ( tr.pHit is null )
+			return;
+
 		CBaseEntity@ pEntity = g_EntityFuncs.Instance( tr.pHit );
 
 		if ( pEntity !is null && pEntity.GetClassname() != "worldspawn" )

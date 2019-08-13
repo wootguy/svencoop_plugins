@@ -41,6 +41,9 @@ HookReturnCode MapChange() {
 HookReturnCode ClientSay(SayParameters@ pParams) {
   const CCommand@ pArguments = pParams.GetArguments();
 
+  if (g_Engine.mapname == "rust_island_b5")
+    return HOOK_HANDLED;
+
   if (pArguments.ArgC() > 0 && (pArguments.Arg(0).ToLowercase() == "party?" || pArguments.Arg(0).ToLowercase() == "partymode" || pArguments.Arg(0).ToLowercase() == "partymode?")) {
     if (g_LastVoteTime != 0 && (uint(g_EngineFuncs.Time()) - g_LastVoteTime) < g_VoteWaitTime) {
       g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Calm down, there was a vote little time ago already.\n");
@@ -60,7 +63,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
       PMVote.Start();
     }
     else if (g_VoteCount >= g_MaxVotes) {
-      g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Maximum tries to enable Party Mode reached, try again after map change.\n");
+      g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Maximum tries to toggle Party Mode reached, try again after map change.\n");
     }
     else {
       Vote@ PMVote = Vote("PartyOn", "ZOMG let's have a fucking party!!!??", 15.0f, 75.0f);

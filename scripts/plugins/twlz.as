@@ -62,5 +62,5 @@ void PlayerPostConnect(int pIndex, int rank, int score, int deaths) {
   CBasePlayer@ pPlayer = g_PlayerFuncs.FindPlayerByIndex(pIndex);
 
   if (pPlayer !is null && pPlayer.IsConnected())
-    g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTTALK, "[twlz] Welcome back, " + pPlayer.pev.netname + "! Rank: #" + rank + " Score: " + score + " Deaths: " + deaths + "\n");
+    g_PlayerFuncs.ClientPrint(pPlayer, HUD_PRINTTALK, "[twlz] Welcome back, " + pPlayer.pev.netname + "! #" + rank + " Score: " + score + " Deaths: " + deaths + "\n");
 }

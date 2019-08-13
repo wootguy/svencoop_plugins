@@ -1,13 +1,9 @@
 const array<string> g_ModelList = {
-'bs_unarmored_barney_2',
-'cl_gus',
-'hevsnark'
+'dgf_wireman'
 };
 
 const array<string> g_AdditionalModelList = {
-'cap_hl_construction_2',
-'drill_sharpe',
-'silvershroud'
+'partybear'
 };
 
 const array<string> g_WheelchairModelList = {
@@ -16,7 +12,7 @@ const array<string> g_WheelchairModelList = {
 'soldier_wheelchair'
 };
 
-const int g_MaxVotes = 0;
+const int g_MaxVotes = 3;
 bool g_Wheelchair = false;
 bool g_WheelchairPrev = false;
 int g_VoteCount = 0;
@@ -126,7 +122,7 @@ HookReturnCode ClientSay(SayParameters@ pParams) {
       g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Wheelchairs are already enabled, blocking vote.\n");
     }
     else if (g_VoteCount >= g_MaxVotes) {
-      g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Maximum tries to enable wheelchairs reached or wheelchair mode is disabled.\n");
+      g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Maximum tries to toggle wheelchairs reached or wheelchair mode is disabled.\n");
     }
     else if (g_Map.HasForcedPlayerModels()) {
       g_PlayerFuncs.ClientPrintAll(HUD_PRINTTALK, "[Info] Wheelchairs are not available on this map.\n");
