@@ -145,7 +145,7 @@ HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer ) {
 HookReturnCode ClientDisconnect( CBasePlayer@ pPlayer ) {
   const string steamId = g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() );
 
-  if ( ips.exists( steamId ) )
+  if ( ips.exists( steamId ) ) {
     AppendFromSven( "- <" + pPlayer.pev.netname + "><" + string(ips[steamId]) + "><" + steamId + "> has left the game\n" );
     ips.delete( steamId );
   }
