@@ -3,7 +3,7 @@
 const string g_FromSven = "scripts/plugins/store/_fromsven.txt";
 const string g_ToSven   = "scripts/plugins/store/_tosven.txt";
 const float delay       = 1.75f; // flush this often (sec.), don't set too low
-const float statusdelay = 7.5f; // wait this long after map change before writing status line
+const float statusdelay = 1.0f; // wait this long after map change before writing status line
 //////////
 
 File@ f_FromSven;
@@ -117,12 +117,13 @@ HookReturnCode ClientSay( SayParameters@ pParams ) {
   const CCommand@ pArgs = pParams.GetArguments();
 
   if ( pArgs.ArgC() < 1 )
-     return HOOK_CONTINUE;
+    return HOOK_CONTINUE;
 
   CBasePlayer@ pPlayer = pParams.GetPlayer();
   const string steamId = g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() );
 
-  AppendFromSven( "<" + pPlayer.pev.netname + "><" + string(ips[steamId]) + "><" + steamId + "> " + pParams.GetCommand() + "\n" );
+  if ( ips.exists( steamId ) )
+    AppendFromSven( "<" + pPlayer.pev.netname + "><" + string(ips[steamId]) + "><" + steamId + "> " + pParams.GetCommand() + "\n" );
 
   return HOOK_CONTINUE;
 }
@@ -144,19 +145,18 @@ HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer ) {
 HookReturnCode ClientDisconnect( CBasePlayer@ pPlayer ) {
   const string steamId = g_EngineFuncs.GetPlayerAuthId( pPlayer.edict() );
 
-  AppendFromSven( "- <" + pPlayer.pev.netname + "><" + string(ips[steamId]) + "><" + steamId + "> has left the game\n" );
-
-  if ( ips.exists( steamId ) ) {
+  if ( ips.exists( steamId ) )
+    AppendFromSven( "- <" + pPlayer.pev.netname + "><" + string(ips[steamId]) + "><" + steamId + "> has left the game\n" );
     ips.delete( steamId );
   }
 
   return HOOK_CONTINUE;
 }
 
-HookReturnCode ClientConnected( edict_t@ pEntity, const string& in szPlayerName, const string& in szIPAddress, bool& out bDisallowJoin, string& out szRejectReason ) {
+HookReturnCode ClientConnected( edict_t@, const string& in szPlayerName, const string& in szIPAddress, bool& out, string& out ) {
   ips[szPlayerName] = szIPAddress;
 
-  g_EngineFuncs.ServerPrint( "[>>>] " + szIPAddress + "\n" );
+ // g_EngineFuncs.ServerPrint( "[>>>] " + szIPAddress + "\n" );
 
   return HOOK_CONTINUE;
 }
